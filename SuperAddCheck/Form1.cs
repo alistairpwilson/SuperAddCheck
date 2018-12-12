@@ -32,7 +32,7 @@ namespace SuperAddCheck
 
             InitializeComponent();
             
-            Version[] Versions = new Version[20];
+            Version[] Versions = new Version[22];
             Versions[0] = new Version("5_00_875", "5.0", 875, 99.0);
             Versions[1] = new Version("5_00_876", "5.0", 876, 100.0);
             Versions[2] = new Version("5_00_877", "5.0", 877, 100.0);
@@ -53,7 +53,9 @@ namespace SuperAddCheck
             Versions[17] = new Version("5_60_895", "5.6", 895, 107.0);
             Versions[18] = new Version("5_60_896", "5.6", 896, 108.0);
             Versions[19] = new Version("5_60_897", "5.6", 897, 109.0);
-            foreach(var V in Versions)
+            Versions[20] = new Version("5_60_898", "5.6", 898, 109.1);
+            Versions[19] = new Version("6_00_900", "6.0", 900, 110.0);
+            foreach (var V in Versions)
             {
                 CmbVersion.Items.Add(V.LongName);
                 CmbVersion.Sorted = true;
