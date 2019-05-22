@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -16,23 +17,10 @@ namespace SuperAddCheck
     {
         public FrmSuperAddCheck()
         {
-            
-            void ExtractResource(string resource)
-            {
-                string exePath = Application.StartupPath.ToString() + "\\ADDCHECK.EXE";
-                Stream stream = GetType().Assembly.GetManifestResourceStream(resource);
-                byte[] bytes = new byte[(int)stream.Length];
-                stream.Read(bytes, 0, bytes.Length);
-                File.WriteAllBytes(exePath, bytes);
-                System.Diagnostics.Process.Start(exePath);
-            }
-            ExtractResource("ADDCHECK.EXE");
-            ExtractResource("AddCheck5.0.EXE");
-            ExtractResource("ADDCHECK5.6.EXE");
-
+           
             InitializeComponent();
             
-            Version[] Versions = new Version[22];
+            Version[] Versions = new Version[25];
             Versions[0] = new Version("5_00_875", "5.0", 875, 99.0);
             Versions[1] = new Version("5_00_876", "5.0", 876, 100.0);
             Versions[2] = new Version("5_00_877", "5.0", 877, 100.0);
@@ -54,7 +42,11 @@ namespace SuperAddCheck
             Versions[18] = new Version("5_60_896", "5.6", 896, 108.0);
             Versions[19] = new Version("5_60_897", "5.6", 897, 109.0);
             Versions[20] = new Version("5_60_898", "5.6", 898, 109.1);
-            Versions[19] = new Version("6_00_900", "6.0", 900, 110.0);
+            Versions[21] = new Version("6_00_900", "6.0", 900, 110.0);
+            Versions[22] = new Version("6_00_905", "6.0", 905, 111.0);
+            Versions[23] = new Version("6_00_906", "6.0", 906, 111.1);
+            Versions[24] = new Version("6_00_907", "6.0", 907, 112.0);
+
             foreach (var V in Versions)
             {
                 CmbVersion.Items.Add(V.LongName);
@@ -76,7 +68,62 @@ namespace SuperAddCheck
 
         private void BtnCheck_Click(object sender, EventArgs e)
         {
-            
+            if (File.Exists("C:\\Temp\\ADDCHECK.exe"))
+            {
+                File.Delete("C:\\Temp\\ADDCHECK.exe");
+                ExtractResource(1.0);
+            }
+            else ExtractResource(1.0);
+            //ExtractResource(5.0);
+        }
+               
+        void ExtractResource(double acheck)
+        {
+            switch (acheck)
+            {
+                case 1.0:
+                    byte[] exeBytes = Properties.Resources.ADDCHECK;
+                    string exeToRun = @"C:\Temp\ADDCHECK.exe";
+                    using (FileStream exeFile = new FileStream(exeToRun, FileMode.CreateNew))
+                    {
+                        exeFile.Write(exeBytes, 0, exeBytes.Length);
+                    }
+
+                    using (Process exeProcess = Process.Start(exeToRun, " \"C:\\Users\\awilson\\Documents\\CatScan dat Fixes\\KZN\\HC_Pocket_PC_20190515232550.dat\""))
+                    {
+                        exeProcess.WaitForExit();
+                    }
+                    break;
+
+                case 5.0:
+                    byte[] exeBytes2 = Properties.Resources.AddCheck5_0;
+                    string exeToRun2 = @"C:\Temp\AddCheck" + acheck.ToString($"F{1}") + ".exe";
+                    using (FileStream exeFile = new FileStream(exeToRun2, FileMode.CreateNew))
+                    {
+                        exeFile.Write(exeBytes2, 0, exeBytes2.Length);
+                    }
+
+                    using (Process exeProcess = Process.Start(exeToRun2))
+                    {
+                        exeProcess.WaitForExit();
+                    }
+                    break;
+
+                case 5.6:
+                    byte[] exeBytes3 = Properties.Resources.AddCheck5_6;
+                    string exeToRun3 = @"C:\Temp\AddCheck" + acheck.ToString($"F{1}") + ".exe";
+                    using (FileStream exeFile = new FileStream(exeToRun3, FileMode.CreateNew))
+                    {
+                        exeFile.Write(exeBytes3, 0, exeBytes3.Length);
+                    }
+
+                    using (Process exeProcess = Process.Start(exeToRun3, "keepcr"))
+                    {
+                        exeProcess.WaitForExit();
+                    }
+                    break;
+            }
+
         }
     }
 }
