@@ -20,32 +20,16 @@ namespace SuperAddCheck
            
             InitializeComponent();
             
-            Version[] Versions = new Version[25];
-            Versions[0] = new Version("5_00_875", "5.0", 875, 99.0);
-            Versions[1] = new Version("5_00_876", "5.0", 876, 100.0);
-            Versions[2] = new Version("5_00_877", "5.0", 877, 100.0);
-            Versions[3] = new Version("5_00_878", "5.0", 878, 101.0);
-            Versions[4] = new Version("5_00_880", "5.0", 880, 102.0);
-            Versions[5] = new Version("5_00_881", "5.0", 881, 102.1);
-            Versions[6] = new Version("5_00_882", "5.0", 882, 102.2);
-            Versions[7] = new Version("5_00_883", "5.0", 883, 103.0);
-            Versions[8] = new Version("5_50_884", "5.5", 884, 103.1);
-            Versions[9] = new Version("5_50_885", "5.5", 885, 103.2);
-            Versions[10] = new Version("5_50_886", "5.5", 886, 103.2);
-            Versions[11] = new Version("5_50_888", "5.5", 888, 104.0);
-            Versions[12] = new Version("5_50_889", "5.5", 889, 104.0);
-            Versions[13] = new Version("5_50_890", "5.5", 890, 104.0);
-            Versions[14] = new Version("5_50_891", "5.5", 891, 105.0);
-            Versions[15] = new Version("5_50_892", "5.5", 892, 106.0);
-            Versions[16] = new Version("5_60_894", "5.6", 894, 107.0);
-            Versions[17] = new Version("5_60_895", "5.6", 895, 107.0);
-            Versions[18] = new Version("5_60_896", "5.6", 896, 108.0);
-            Versions[19] = new Version("5_60_897", "5.6", 897, 109.0);
-            Versions[20] = new Version("5_60_898", "5.6", 898, 109.1);
-            Versions[21] = new Version("6_00_900", "6.0", 900, 110.0);
-            Versions[22] = new Version("6_00_905", "6.0", 905, 111.0);
-            Versions[23] = new Version("6_00_906", "6.0", 906, 111.1);
-            Versions[24] = new Version("6_00_907", "6.0", 907, 112.0);
+            List<Version> Versions = new List<Version>();
+
+            using (var reader = new StreamReader(@"\\HCDC02\USERS\awilson\CatScan\Versions.csv"))
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(',');
+
+                    Versions.Add(new Version(values[0], values[1], Convert.ToInt32(values[2]), Double.Parse(values[3], System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.NumberFormatInfo.InvariantInfo)));
+                }
 
             foreach (var V in Versions)
             {
